@@ -13,7 +13,7 @@ const Finalizados = () => {
     async function fetchData() {
       const token = localStorage.getItem("token");
       const response = await obterPedidos(token);
-      const listaPedidos = await response.json();
+      const listaPedidos = await response.data
       setPedidos(listaPedidos);
       console.log(listaPedidos)
     }

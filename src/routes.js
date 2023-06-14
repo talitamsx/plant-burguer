@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ClienteStore } from "./context/ClienteContext";
+import { ClienteStore } from "./context/clienteContetx";
 import Modal from 'react-modal';
 import FormLogin from "./pages/Login";
 import NovoPedido from "./pages/Atendimento";

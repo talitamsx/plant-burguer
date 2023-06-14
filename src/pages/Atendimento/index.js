@@ -5,7 +5,7 @@ import Logo from "../../componentes/Logo"
 import styles from "./Atendimento.module.css"
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ClienteContext } from "../../context/ClienteContext";
+import { ClienteContext } from "../../context/clienteContetx";
 
 const NovoPedido = () => {
   const { addCliente } = useContext(ClienteContext);

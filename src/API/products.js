@@ -1,13 +1,12 @@
-const API_URL = 'http://localhost:8080'
+import { request } from "./request"
 
-const produtos = (token) => {
-  return fetch(`${API_URL}/products`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      'Authorization': `Bearer ${token}`
-    },
-  })
-}
+const produtos = async (token) => {
+  const headers = {
+    'Authorization': `Bearer ${token}`
+  };
 
-export default produtos
+  const response = await request('products', 'GET', headers);
+  return response;
+};
+
+export default produtos;

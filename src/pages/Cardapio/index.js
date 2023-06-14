@@ -18,13 +18,13 @@ const Cardapio = () => {
   const navegar = useNavigate();
 
   const navegarParaCozinha = () => {
-    navegar("/cozinha");
+    navegar("/preparo");
   }
   useEffect(() => {
     async function fetchData() {
       const token = localStorage.getItem("token")
       const response = await produtos(token)
-      const listaProdutos = await response.json()
+      const listaProdutos = response.data
       setProdutosCardapio(listaProdutos)
       console.log(listaProdutos)
     }

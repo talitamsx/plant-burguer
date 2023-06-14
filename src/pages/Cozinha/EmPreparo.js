@@ -16,8 +16,8 @@ const EmPreparo = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await obterPedidos(token);
-      const listaPedidos = await response.json();
-      setPedidos(listaPedidos);
+      const listaPedidos = await response.data
+      setPedidos(listaPedidos.filter(pedido => pedido.status !== "finalizado"));
       console.log(listaPedidos);
     }
     fetchData();
@@ -27,17 +27,29 @@ const EmPreparo = () => {
   const [erro, setErro] = useState("");
   const [modalIsOpen, setIsOpen] = useState(false);
 
+   function abrirModal() {
+    setIsOpen(true); 
+  }
+
+  function fecharModal() {
+    setIsOpen(false);
+  }
+
   const finalizarPedido = async (orderId) => {
-    console.log(orderId);
-    setErro("");
+    // console.log(orderId);
+    setErro("");    
     try {
       const response = await finalizados(token, orderId);
-      const jsonData = await response.json();
-      localStorage.setItem("orderId", jsonData.orders.id);
-      if (response.status === "finalizado") {
-        abrirModal("O pedido foi finalizado.");
-        navegar("/finalizados");
-      } else {
+      const jsonData = await response.data
+      localStorage.setItem("orderId", jsonData.id);
+     setPedidos(prevStat => prevStat.filter(pedido => pedido.id !== orderId))
+      if (jsonData.status === "finalizado") {        
+        setErro("foi?.");
+        abrirModal();
+        navegar("/finalizados")
+      } 
+     
+      else {
         setErro("Ocorreu um erro ao finalizar o pedido.");
         abrirModal();
       }
@@ -45,15 +57,8 @@ const EmPreparo = () => {
       setErro("Algo inesperado aconteceu, tente novamente.");
       abrirModal();
     }
+    
   };
-
-  function abrirModal() {
-    setIsOpen(true);
-  }
-
-  function fecharModal() {
-    setIsOpen(false);
-  }
 
   return (
     <section>
@@ -66,7 +71,7 @@ const EmPreparo = () => {
         <CaixaFundo>
           <div key={pedido.id}>
             <span className={styles.nomeCliente}>
-              Cliente: {pedido.client.toUpperCase()}
+            Cliente: {pedido.cliente ? pedido.cliente.toUpperCase() : ''}
             </span>
             <div className={styles.fundoBranco}>
               <div className={styles.qtdValor}>
@@ -75,7 +80,7 @@ const EmPreparo = () => {
               </div>
               <div className={styles.pedidosCozinha}>
                 <div>
-                  {pedido.products.map((product) => (
+                  {pedido.products && pedido.products.map((product) => (
                     <div className={styles.produtos} key={product.id}>
                       <span>{product.name}</span>
                       <span>{product.quantidade}</span>
@@ -101,6 +106,7 @@ const EmPreparo = () => {
           </button>
         </div>
       </Modal>
+      
     </section>
   );
 };
